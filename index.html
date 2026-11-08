@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Love Surprise Gift</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <canvas id="confetti"></canvas>
+
+    <div class="container">
+
+        <h1>❤️ A Special Gift For You ❤️</h1>
+
+        <p>Someone has prepared a surprise for you...</p>
+
+        <div class="gift" onclick="openGift()">
+
+            <div class="lid" id="lid"></div>
+
+            <div class="box"></div>
+
+            <div class="ribbon"></div>
+
+        </div>
+
+        <button id="openButton" onclick="openGift()">
+            Open Your Gift 🎁
+        </button>
+
+        <div id="message">
+
+            <h2>💖 Surprise! 💖</h2>
+
+            <p>You are someone special.</p>
+
+            <p>May your days always be filled with happiness.</p>
+
+            <p>Sending you love, smiles, and endless hugs! ❤️</p>
+
+        </div>
+
+    </div>
+
+    <script>
+
+        let giftOpened = false;
+
+        function openGift() {
+
+            document.getElementById("lid").classList.add("open");
+
+            document.getElementById("message").style.display = "block";
+
+            document.body.classList.add("romantic");
+
+            if (!giftOpened) {
+
+                giftOpened = true;
+
+                launchConfetti();
+
+                document.getElementById("openButton").textContent =
+                    "Surprise opened! 💖";
+
+            }
+
+        }
+
+        function launchConfetti() {
+
+            const canvas = document.getElementById("confetti");
+
+            const ctx = canvas.getContext("2d");
+
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            const colors = [
+                "#ff1493",
+                "#ff69b4",
+                "#ffd700",
+                "#ffffff",
+                "#ff4d6d",
+                "#c77dff",
+                "#7bdff2"
+            ];
+
+            const pieces = [];
+
+            for (let i = 0; i < 180; i++) {
+
+                pieces.push({
+
+                    x: Math.random() * canvas.width,
+
+                    y: -Math.random() * canvas.height,
+
+                    width: Math.random() * 9 + 5,
+
+                    height: Math.random() * 6 + 4,
+
+                    color: colors[
+                        Math.floor(Math.random() * colors.length)
+                    ],
+
+                    speed: Math.random() * 4 + 2,
+
+                    drift: Math.random() * 3 - 1.5,
+
+                    rotation: Math.random() * 360,
+
+                    spin: Math.random() * 8 - 4
+
+                });
+
+            }
+
+            let frame = 0;
+
+            function animateConfetti() {
+
+                ctx.clearRect(
+                    0,
+                    0,
+                    canvas.width,
+                    canvas.height
+                );
+
+                pieces.forEach(piece => {
+
+                    piece.y += piece.speed;
+
+                    piece.x += piece.drift;
+
+                    piece.rotation += piece.spin;
+
+                    ctx.save();
+
+                    ctx.translate(piece.x, piece.y);
+
+                    ctx.rotate(
+                        piece.rotation * Math.PI / 180
+                    );
+
+                    ctx.fillStyle = piece.color;
+
+                    ctx.fillRect(
+                        -piece.width / 2,
+                        -piece.height / 2,
+                        piece.width,
+                        piece.height
+                    );
+
+                    ctx.restore();
+
+                });
+
+                frame++;
+
+                if (frame < 240) {
+
+                    requestAnimationFrame(animateConfetti);
+
+                } else {
+
+                    ctx.clearRect(
+                        0,
+                        0,
+                        canvas.width,
+                        canvas.height
+                    );
+
+                }
+
+            }
+
+            animateConfetti();
+
+        }
+
+        window.addEventListener("resize", function () {
+
+            const canvas = document.getElementById("confetti");
+
+            canvas.width = window.innerWidth;
+
+            canvas.height = window.innerHeight;
+
+        });
+
+    </script>
+
+</body>
+</html>
